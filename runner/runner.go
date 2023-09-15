@@ -626,7 +626,7 @@ func (r *Runner) RunEnumeration() {
 			}
 		}()
 
-		var plainFile, jsonFile, csvFile, indexFile, indexScreenshotFile *os.File
+		var plainFile, jsonFile, jsonOutputFile, csvFile, indexFile, indexScreenshotFile *os.File
 
 		if r.options.Output != "" && r.options.OutputAll {
 			plainFile = openOrCreateFile(r.options.Resume, r.options.Output)
@@ -651,6 +651,11 @@ func (r *Runner) RunEnumeration() {
 			}
 			jsonFile = openOrCreateFile(r.options.Resume, r.options.Output+ext)
 			defer jsonFile.Close()
+		}
+
+		if r.options.JSONFile != "" && jsonOutputFile == nil {
+			jsonOutputFile = openOrCreateFile(r.options.Resume, r.options.JSONFile)
+			defer jsonOutputFile.Close()
 		}
 
 		if r.options.Output != "" && r.options.CSVOutput && csvFile == nil {
@@ -918,6 +923,15 @@ func (r *Runner) RunEnumeration() {
 				//nolint:errcheck // this method needs a small refactor to reduce complexity
 				if jsonFile != nil {
 					jsonFile.WriteString(row + "\n")
+				}
+			}
+
+			if r.options.JSONFile != "" {
+				row := resp.JSON(&r.scanopts)
+
+				//nolint:errcheck // this method needs a small refactor to reduce complexity
+				if jsonOutputFile != nil {
+					jsonOutputFile.WriteString(row + "\n")
 				}
 			}
 

@@ -183,6 +183,7 @@ type Options struct {
 	ContentLength             bool
 	FollowRedirects           bool
 	StoreResponse             bool
+	JSONFile                  string
 	JSONOutput                bool
 	CSVOutput                 bool
 	CSVOutputEncoding         string
@@ -380,6 +381,7 @@ func ParseOptions() *Options {
 		flagSet.StringVarP(&options.StoreResponseDir, "store-response-dir", "srd", "", "store http response to custom directory"),
 		flagSet.BoolVar(&options.CSVOutput, "csv", false, "store output in csv format"),
 		flagSet.StringVarP(&options.CSVOutputEncoding, "csv-output-encoding", "csvo", "", "define output encoding"),
+		flagSet.StringVarP(&options.JSONFile, "json-file", "jf", "", "file to write JSON results in the background"),
 		flagSet.BoolVar(&options.JSONOutput, "json", false, "store output in JSONL(ines) format"),
 		flagSet.BoolVarP(&options.ResponseInStdout, "include-response", "irr", false, "include http request/response in JSON output (-json only)"),
 		flagSet.BoolVarP(&options.Base64ResponseInStdout, "include-response-base64", "irrb", false, "include base64 encoded http request/response in JSON output (-json only)"),
